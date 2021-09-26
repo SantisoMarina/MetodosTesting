@@ -1,0 +1,34 @@
+<h2> Transicion de estados </h2>
+<div class="mt-2">
+    <p class="mt-2">La técnica de transición de estados es una técnica de prueba dinámica, que se utiliza cuando el
+        sistema se define en términos de un número finito de estados y las transiciones entre los estados se rigen por
+        las reglas del sistema.</p>
+    <p class="mt-2">O, en otras palabras, esta técnica se utiliza cuando las características de un sistema se
+        representan como estados que se transforman entre sí. Las transformaciones están determinadas por las reglas del
+        software. La representación pictórica se puede mostrar como:</p>
+    <img src="../../../assets/imagenes/transicion_estado_2.png" alt="graficos">'
+    <p class="mt-2">Entonces aquí vemos que una entidad transiciones del Estado 1 al Estado 2 debido a algunos aporte
+        condición, que conduce a una evento y resulta en acción y finalmente da el producción .</p>
+    <h3>Ejemplo</h3>
+    <p class="mt-2">Tenemos un televisor el cual posee 4 estados (Enchufado,Desenchufado,Apagado y prendido) estos estados
+        tienen un orden logico el cual deben respetar Ej: No puedo prender el televisor si esta desenchufado
+    </p>
+
+    <h3>Estado Televisor: <span [ngClass]="{'text-primary': estadoTelevisor.color == 'primary','text-success': estadoTelevisor.color == 'success','text-danger': estadoTelevisor.color == 'danger','text-warning': estadoTelevisor.color == 'warning'}">{{estadoTelevisor.estado}}</span> </h3>
+    <div class="row pb-4">
+        <div class="col">
+            <div class="d-flex flex-column">
+                <button type="button" (click)="actualizarEstado('enchufar')" class="btn btn-success btn-block">Enchufar tv </button>
+                <button type="button" (click)="actualizarEstado('desenchufar')" class="btn btn-danger btn-block">Desenchufar tv </button>
+            </div>
+        </div>
+        <div class="col">
+            <div class="d-flex flex-column">
+                <button type="button" (click)="actualizarEstado('prender')" class="btn btn-primary btn-block">Prender tv </button>
+                <button type="button" (click)="actualizarEstado('apagar')" class="btn btn-warning btn-block">Apagar tv </button>
+            </div>
+        </div>
+    </div>
+    <h2>Diagrama de estado y casos de prueba</h2>
+    <img src="../../../assets/imagenes/transicion_estado_1.png" alt="graficos">'
+</div>

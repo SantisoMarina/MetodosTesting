@@ -1,0 +1,77 @@
+<h2> Tabla de decision </h2>
+<div class="mt-2">
+    <p class="mt-2">
+        La tabla de decisión es una herramienta que sintetiza procesos en los
+        cuales se dan un conjunto de condiciones y un conjunto de acciones a tomar
+        según el valor que toman las condiciones. Puede utilizarse como herramienta en
+        los distintos momentos del proyecto, esto es: en la exposición de los hechos, en
+        el análisis del sistema actual, en el diseño del nuevo sistema y en el desarrollo
+        del software.
+    </p>
+    <p class="mt-2">
+        Las tablas de decisión se emplean desde mediados de 1950, cuando fueron
+        desarrolladas por la General Electric para el análisis de funciones de la empresa
+        como control de inventarios, análisis de ventas, análisis de créditos y control de
+        transporte y rutas.
+    </p>
+    <h3 class="mt-2">Estructura de una tabla de decisiones</h3>
+    <p class="mt-2">
+        La tabla de decisión está integrada por: matriz de condiciones, matriz de
+        acciones y matriz de reglas para condiciones y acciones. En la matriz de
+        condiciones se enumeran todas las situaciones que pueden presentarse. Las
+        reglas de condiciones indican qué valor debe asociarse a cada una de las
+        condiciones. En la matriz de acciones se enlistan el conjunto de todos los pasos
+        que se deben seguir cuando se presentan ciertas condiciones. Las reglas de
+        acciones muestran las acciones específicas del conjunto que deben emprenderse
+        dados los valores que toman las condiciones.
+    </p>
+    <h3 class="mt-2"> Ejemplo</h3>
+    <p class="mt-2">
+        Tenemos un software que se encarga de validar si una persona puede o no recibir un prestamos, las condiciones
+        que debe tener en cuenta al validar si corresponse prestamos o no son las siguiente:
+    </p>
+    <ul>
+        <li>Si la persona que solicita el prestamo es un Estudiante no sera Aprobado el prestamo aunque este no tenga
+            deudas sin pagar.</li>
+        <li>Si la persona que solicita el prestamo es un Empleado/Trabajador el prestamo sera Aprobado aunque este si
+            tenga deudas sin pagar.</li>
+        <li>Si la persona que solicita el prestamo es un Retirado el prestamo sera Aprobado si este no presenta deudas
+            en caso de si tener deudas el prestamos no se aprobara.</li>
+    </ul>
+
+    <p class="mt-2">Creamos la tabla decisiones correspondiente al caso planteado y a partir de ese se crean los casos
+        de prueba</p>
+    <img style="max-width: 100%;" src="../../../assets/imagenes/tabla_decisiones_e1.png" alt="tabla de decisiones">
+
+    <h3 class="mt-2">Formulario prestamos banco</h3>
+    <div class="formulario p-4 d-flex justify-content-space-between m-auto flex-column">
+        <div *ngIf="opcionSeleccionada" class="d-flex flex-row justify-content-end">
+
+            <div *ngIf="!this.personaSeleccionada.deuda" class="alert alert-success" role="alert">
+                {{this.personaSeleccionada.nombre}} no posee deudas
+            </div>
+            <div *ngIf="this.personaSeleccionada.deuda" class="alert alert-danger" role="alert">
+                {{this.personaSeleccionada.nombre}} posee deudas
+            </div>
+        </div>
+        <mat-form-field class="w-50" appearance="fill">
+            <mat-label>Nombre persona</mat-label>
+            <input type="text" matInput [formControl]="myControl" [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn"
+                (optionSelected)="getPersonaSeleccionada($event.option.value     )">
+                <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                    {{option.nombre}}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+        <mat-radio-group [(ngModel)]="this.tipoPersonaSeleccionada" class="example-radio-group" aria-label="Selecciona un tipo de solicitante:">
+            <mat-radio-button [value]="1">Estudiante</mat-radio-button>
+            <mat-radio-button [value]="2">Trabajador</mat-radio-button>
+            <mat-radio-button [value]="3">Retirado</mat-radio-button>
+        </mat-radio-group>
+        <div class="d-flex justify-content-end">
+            <button (click)="validarPrestamoBanco()" [disabled]="this.personaSeleccionada.id == 0 && this.tipoPersonaSeleccionada == 0" mat-flat-button color="accent">Validar prestamo</button>
+        </div>
+    </div>
+
+</div>

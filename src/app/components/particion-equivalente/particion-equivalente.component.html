@@ -1,0 +1,270 @@
+<h2>Particiones de equivalencia</h2>
+<div class="mt-2">
+    <p>La división en particiones de equivalencia,
+        también llamadas clases de equivalencia, es una técnica de pruebas
+        de caja negra en la que las entradas del programa se clasifican en clases.
+        Considera como perteneciente al dominio de entrada a todas las entradas que
+        puedan tener efecto en la salida de la prueba, positivo o negativo.
+    </p>
+    <div class="alert alert-danger" role="alert">
+        Todos los miembros de cada clase de equivalencia comparten ciertas características en común que no son
+        compartidas con miembros de otras clases.
+    </div>
+
+    <img src="../../../assets/imagenes/particion_equivalencia_1.png" alt="graficos">
+    <p class="mt-2">Cada clase se llama partición de equivalencia porque todos elementos en la clase prueban la misma
+        cosa. Si uno de los elementos de una clase provoca un error,
+        todos los de esa clase probablemente lo harán. La idea principal de esta técnica es <strong>identificar los
+            casos de prueba usando un elemento de cada clase de equivalencia. Ej:</strong> </p>
+    <p class="mt-2">Se dispone de un módulo de software con los siguientes datos de entrada:</p>
+    <h2 class="m-auto">Formulario banco</h2>
+    <div class="formulario-part-equiv d-flex flex-column w-50 m-auto">
+        <mat-form-field appearance="fill">
+            <mat-label>Código de área</mat-label>
+            <input matInput [(ngModel)]="ordenR.codArea" placeholder="345" required>
+            <!--<mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>-->
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>Clave identificativa operacion</mat-label>
+            <input matInput [(ngModel)]="ordenR.claveOperacion" placeholder="Comida" required>
+            <!--<mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>-->
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>Órdenes posibles</mat-label>
+            <input matInput [(ngModel)]="ordenR.ordPosibles" placeholder="factura" required>
+            <!--<mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error> [formControl]="email"-->
+        </mat-form-field>
+        <div class="d-flex w-100 flex-row justify-content-end">
+            <button (click)="guardarOrdenRealizada()" mat-raised-button color="accent">Realizar Orden</button>
+        </div>
+        <div class="mt-4" *ngIf="guardadoPresionado">
+            <div *ngIf="!errorGuardado" class="alert alert-success" role="alert">
+                Orden realizada exitosamente
+            </div>
+            <div *ngIf="errorGuardado" class="alert alert-danger" role="alert">
+                No se pudo realizar la orden revise lo datos de entrada
+            </div>
+        </div>
+        
+    </div>
+
+    <h2 class="m-auto">Identificacion y etiquetado de las clase de equivalencia</h2>
+    <div class="m-4 pb-4">
+        <table class="table table-danger table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Entrada</th>
+                    <th scope="col">Condición</th>
+                    <th scope="col">Salidas válidas</th>
+                    <th scope="col">Salidas inválidas</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Código de área</td>
+                    <td>Cóndición booleana (¿Es un número?) + rango de valores (200...999)</td>
+                    <td>
+                        <ul>
+                            <li>
+                    <td><strong style="color: blue;">1.</strong> 200<=código<=999 </td>
+                            </li>
+                            </ul>
+                    <td>
+                        <ul>
+                            <li><strong style="color: blue;">2.</strong> código < 200</li>
+                            <li><strong style="color: blue;">3.</strong> código > 999</li>
+                            <li><strong style="color: blue;">4.</strong> no es un número</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Clave identificativa operacion</td>
+                    <td>Conjunto finitio de valores (¿Son 6 caracteres?)</td>
+                    <td>
+                        <ul>
+                            <li>
+                                <strong style="color: blue;">5.</strong> 6 caracteres exactos, ni más ni menos
+                            </li>
+                        </ul>
+                    </td>
+                    <td>
+                        <ul>
+                            <li><strong style="color: blue;">6.</strong> menos de 6 caracteres</li>
+                            <li><strong style="color: blue;">7.</strong> más de 6 caracteres</li>
+                        </ul>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>Documento</td>
+                    <td>Conjunto de valores admitidos (¿Documento válido?)</td>
+                    <td>
+                        <ul>
+                            <li><strong style="color: blue;">8.</strong> "cheque"</li>
+                            <li><strong style="color: blue;">9.</strong> "depósito"</li>
+                            <li><strong style="color: blue;">10.</strong> "factura"</li>
+                            <li><strong style="color: blue;">11.</strong> "retirada de fondos"</li>
+                        </ul>
+                    </td>
+                    <td>
+                        <ul>
+                            <li><strong style="color: blue;">12.</strong> no es órden válida</li>
+                        </ul>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <h2 class="m-auto">Diseño de casos de prueba para cubrir tantas clases de equivalencia validas
+        posibles(1,5,8,9,10,11)</h2>
+    <div class="m-4 pb-4">
+        <table class="table table-danger table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Código de área</th>
+                    <th scope="col">Clave identificativa</th>
+                    <th scope="col">Documento</th>
+                    <th scope="col">Clases válidas cubiertas</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>300</td>
+                    <td>Nómina</td>
+                    <td>"cheque"</td>
+                    <td><strong style="color: blue;">1</strong>, <strong style="color: blue;">5</strong>, <strong
+                            style="color: blue;">8</strong></td>
+                </tr>
+                <tr>
+                    <td>400</td>
+                    <td>Viajes</td>
+                    <td>"depósito"</td>
+                    <td>1, 5, <strong style="color: blue;">9</strong></td>
+                </tr>
+                <tr>
+                    <td>500</td>
+                    <td>Coches</td>
+                    <td>"factura"</td>
+                    <td>1, 5, <strong style="color: blue;">10</strong></td>
+                </tr>
+                <tr>
+                    <td>600</td>
+                    <td>Comida</td>
+                    <td>"retirada de fondos"</td>
+                    <td>1, 5, <strong style="color: blue;">11</strong></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <h2 class="m-auto">Diseño de casos de prueba para cubrir una sola clase de equivalencia invalida cada vez(2,3,4,6,7
+        y 12)</h2>
+    <div class="m-4 pb-4">
+        <table class="table table-danger table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Código de área</th>
+                    <th scope="col">Clave identificativa</th>
+                    <th scope="col">Documento</th>
+                    <th scope="col">Clases válidas cubiertas</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>150</td>
+                    <td>Viajes</td>
+                    <td>"factura"</td>
+                    <td> <strong style="color: blue;">2</strong>, 5, 10</td>
+                </tr>
+                <tr>
+                    <td>1100</td>
+                    <td>Coches</td>
+                    <td>"depósito"</td>
+                    <td><strong style="color: blue;">3</strong>, 5, 9</td>
+                </tr>
+                <tr>
+                    <td>#Ab20</td>
+                    <td>Comida</td>
+                    <td>"retirada de fondos"</td>
+                    <td><strong style="color: blue;">4</strong>, 5, 11</td>
+                </tr>
+                <tr>
+                    <td>220</td>
+                    <td>Luz</td>
+                    <td>"depósito"</td>
+                    <td>1, <strong style="color: blue;">6</strong>, 9</td>
+                </tr>
+                <tr>
+                    <td>400</td>
+                    <td>Teléfono</td>
+                    <td>"cheque"</td>
+                    <td>1, <strong style="color: blue;">7</strong>, 8</td>
+                </tr>
+                <tr>
+                    <td>500</td>
+                    <td>Viajes</td>
+                    <td>"pagos varios&&"</td>
+                    <td>1, 5, <strong style="color: blue;">12</strong></td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+    <div class="d-flex flex-row justify-content-end text-muted">
+        <p>El caso que esta fallando es la clave operacion menor a 6</p>
+    </div>
+
+    <h2 id="valoresLimites" class="m-auto">Diseño de casos de prueba para trabajar con los valores limites</h2>
+    <div class="m-4 pb-4">
+        <table class="table table-danger table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Entrada</th>
+                    <th scope="col">Condición</th>
+                    <th scope="col">Salidas válidas</th>
+                    <th scope="col">Salidas inválidas</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Código de área</td>
+                    <td>Cóndición booleana (¿Es un número?) + rango de valores (200...999)</td>
+                    <td>
+                        <ul>
+                            <li><strong style="color: blue;">13.</strong> código = 200 </li>
+                            <li><strong style="color: blue;">14.</strong> código = 201</li>
+                            <li><strong style="color: blue;">15.</strong> código = 998</li>
+                            <li><strong style="color: blue;">16.</strong> código = 999</li>
+                        </ul>
+                    </td>
+					<td>
+                        <ul>
+                            <li><strong style="color: blue;">17.</strong> código = 199 </li>
+                            <li><strong style="color: blue;">18.</strong> código = 1000</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Clave identificativa operacion</td>
+                    <td>Conjunto finitio de valores (¿Son 6 caracteres?)</td>
+                    <td>No hay cambios</td>
+                    <td>
+                        <ul>
+                            <li><strong style="color: blue;">19.</strong> 5 caracteres </li>
+                            <li><strong style="color: blue;">20.</strong> 7 caracteres</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Documento</td>
+                    <td>Conjunto de valores admitidos (¿Documento válido?)</td>
+                    <td>No hay cambios</td>
+                    <td>No hay cambios</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+</div>
